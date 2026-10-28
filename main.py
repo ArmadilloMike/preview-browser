@@ -26,6 +26,9 @@ class WebViewer(QtWidgets.QWidget):
     def reload_page(self):
         self.view.reload()
 
+    def set_url(self, url):
+        self.view.setUrl(QUrl.url(url))
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
