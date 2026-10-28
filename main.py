@@ -17,6 +17,15 @@ class WebViewer(QtWidgets.QWidget):
         layout.addWidget(self.view)
         self.setLayout(layout)
 
+    def go_back(self):
+        self.view.back()
+
+    def go_forward(self):
+        self.view.forward()
+
+    def reload_page(self):
+        self.view.reload()
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
