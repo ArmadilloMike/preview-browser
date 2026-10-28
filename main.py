@@ -1,3 +1,4 @@
+import webbrowser
 from PySide6.QtCore import QUrl
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWidgets import QVBoxLayout, QMainWindow, QToolBar
@@ -37,6 +38,11 @@ class WebViewer(QtWidgets.QWidget):
     def get_webpage_url(self):
         return self.view.url().toString()
 
+
+def open_in_browser(url):
+    webbrowser.open(url)
+    return "done"
+
 class AddressBar(QToolBar):
     def __init__(self, web_viewer):
         super().__init__()
@@ -48,9 +54,14 @@ class AddressBar(QToolBar):
         self.forward_button = QtWidgets.QPushButton("Forward", self)
         self.forward_button.clicked.connect(self.web_viewer.go_forward)
 
+        self.open_browser = QtWidgets.QPushButton("Open in Browser")
+        self.open_browser.clicked.connect(lambda: open_in_browser(self.web_viewer.get_webpage_url()))
+
         self.addWidget(self.back_button)
         self.addWidget(self.forward_button)
+        self.addWidget(self.open_browser)
         self.setMovable(False)
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
