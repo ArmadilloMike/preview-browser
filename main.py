@@ -1,6 +1,6 @@
 from PySide6.QtCore import QUrl
 from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtWidgets import QVBoxLayout, QMainWindow
+from PySide6.QtWidgets import QVBoxLayout, QMainWindow, QToolBar
 import sys
 from PySide6 import QtWidgets, QtCore
 
@@ -37,6 +37,14 @@ class WebViewer(QtWidgets.QWidget):
     def get_webpage_url(self):
         return self.view.url().toString()
 
+class AddressBar(QToolBar):
+    def __init__(self):
+        super().__init__()
+
+        self.back_button = QtWidgets.QPushButton("Back", self)
+
+        self.addWidget(self.back_button)
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -46,6 +54,8 @@ class MainWindow(QMainWindow):
 
         self.web_viewer = WebViewer()
         self.setCentralWidget(self.web_viewer)
+        self.address_bar = AddressBar()
+        self.addToolBar(self.address_bar)
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
