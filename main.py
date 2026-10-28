@@ -1,3 +1,4 @@
+import pyperclip
 import webbrowser
 from PySide6.QtCore import QUrl
 from PySide6.QtWebEngineWidgets import QWebEngineView
@@ -43,6 +44,10 @@ def open_in_browser(url):
     webbrowser.open(url)
     return "done"
 
+def copy_to_clipboard(text):
+    pyperclip.copy(text)
+    return "done"
+
 class AddressBar(QToolBar):
     def __init__(self, web_viewer):
         super().__init__()
@@ -57,9 +62,13 @@ class AddressBar(QToolBar):
         self.open_browser = QtWidgets.QPushButton("Open in Browser")
         self.open_browser.clicked.connect(lambda: open_in_browser(self.web_viewer.get_webpage_url()))
 
+        self.address_copy = QtWidgets.QPushButton("Copy to Clipboard")
+        self.address_copy.clicked.connect(lambda: copy_to_clipboard(self.web_viewer.get_webpage_url()))
+
         self.addWidget(self.back_button)
         self.addWidget(self.forward_button)
         self.addWidget(self.open_browser)
+        self.addWidget(self.address_copy)
         self.setMovable(False)
 
 
