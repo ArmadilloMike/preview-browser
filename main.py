@@ -38,12 +38,18 @@ class WebViewer(QtWidgets.QWidget):
         return self.view.url().toString()
 
 class AddressBar(QToolBar):
-    def __init__(self):
+    def __init__(self, web_viewer):
         super().__init__()
+        self.web_viewer = web_viewer
 
         self.back_button = QtWidgets.QPushButton("Back", self)
+        self.back_button.clicked.connect(self.web_viewer.go_back)
+
+        self.forward_button = QtWidgets.QPushButton("Forward", self)
+        self.forward_button.clicked.connect(self.web_viewer.go_forward)
 
         self.addWidget(self.back_button)
+        self.addWidget(self.forward_button)
         self.setMovable(False)
 
 class MainWindow(QMainWindow):
@@ -55,7 +61,7 @@ class MainWindow(QMainWindow):
 
         self.web_viewer = WebViewer()
         self.setCentralWidget(self.web_viewer)
-        self.address_bar = AddressBar()
+        self.address_bar = AddressBar(self.web_viewer)
         self.addToolBar(self.address_bar)
 
 if __name__ == '__main__':
