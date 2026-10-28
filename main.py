@@ -34,6 +34,9 @@ class WebViewer(QtWidgets.QWidget):
     def get_webpage_icon(self):
         return self.view.iconUrl()
 
+    def get_webpage_url(self):
+        return self.view.url().toString()
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -49,5 +52,8 @@ if __name__ == '__main__':
 
     window = MainWindow()
     window.show()
+    window.web_viewer.view.titleChanged.connect(
+        lambda _: window.setWindowTitle(f"Preview Browser - {window.web_viewer.get_webpage_title()} - {window.web_viewer.get_webpage_url()}")
+    )
 
     sys.exit(app.exec())
