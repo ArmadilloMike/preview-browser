@@ -44,6 +44,7 @@ class AddressBar(QToolBar):
         self.back_button = QtWidgets.QPushButton("Back", self)
 
         self.addWidget(self.back_button)
+        self.setMovable(False)
 
 class MainWindow(QMainWindow):
     def __init__(self):
