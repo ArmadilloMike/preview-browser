@@ -13,7 +13,6 @@ class WebViewer(QtWidgets.QWidget):
         self.view.load(QUrl("https://example.com"))
 
         layout = QVBoxLayout(self)
-        #layout.addWidget(self.text)
         layout.addWidget(self.view)
         self.setLayout(layout)
 
@@ -28,6 +27,12 @@ class WebViewer(QtWidgets.QWidget):
 
     def set_url(self, url):
         self.view.setUrl(QUrl.url(url))
+
+    def get_webpage_title(self):
+        return self.view.title()
+
+    def get_webpage_icon(self):
+        return self.view.iconUrl()
 
 class MainWindow(QMainWindow):
     def __init__(self):
