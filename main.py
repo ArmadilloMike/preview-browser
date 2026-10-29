@@ -6,6 +6,7 @@ from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWidgets import QVBoxLayout, QMainWindow, QToolBar, QStyle
 import sys
 from PySide6 import QtWidgets, QtCore
+import argparse
 
 
 class WebViewer(QtWidgets.QWidget):
@@ -91,7 +92,7 @@ class AddressBar(QToolBar):
 
 
 class MainWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, initial_url=None):
         super().__init__()
 
         self.shortcut_escape = QShortcut(QKeySequence(Qt.Key.Key_Escape), self)
@@ -105,10 +106,18 @@ class MainWindow(QMainWindow):
         self.address_bar = AddressBar(self.web_viewer)
         self.addToolBar(self.address_bar)
 
-if __name__ == '__main__':
-    app = QtWidgets.QApplication(sys.argv)
+        if initial_url:
+            print(f"got thingy {initial_url}")
 
-    window = MainWindow()
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description="Preview Browser")
+    parser.add_argument('--url', type=str, help='URL to pass to the browser')
+
+    args, qt_args = parser.parse_known_args()
+
+    app = QtWidgets.QApplication([sys.argv[0]] + qt_args)
+
+    window = MainWindow(initial_url=args.text)
     window.show()
     window.web_viewer.view.titleChanged.connect(
         lambda _: window.setWindowTitle(f"Preview Browser - {window.web_viewer.get_webpage_title()}")
