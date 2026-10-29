@@ -64,6 +64,11 @@ class AddressBar(QToolBar):
         forward_icon = QIcon("assets/forward_icon.svg")
         self.forward_button.setIcon(forward_icon)
 
+        self.address_bar = QtWidgets.QLineEdit()
+        self.address_bar.setReadOnly(True)
+        self.address_bar.setPlaceholderText("https://example.com")
+        self.address_bar.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+
         self.open_browser = QtWidgets.QPushButton("Open in Browser")
         self.open_browser.clicked.connect(lambda: open_in_browser(self.web_viewer.get_webpage_url()))
         open_icon = QIcon("assets/open_browser_icon.svg")
@@ -76,9 +81,13 @@ class AddressBar(QToolBar):
 
         self.addWidget(self.back_button)
         self.addWidget(self.forward_button)
+        self.addWidget(self.address_bar)
         self.addWidget(self.open_browser)
         self.addWidget(self.address_copy)
         self.setMovable(False)
+
+    def set_address_bar_text(self, text):
+        self.address_bar.setText(text)
 
 
 class MainWindow(QMainWindow):
@@ -99,10 +108,13 @@ if __name__ == '__main__':
     window = MainWindow()
     window.show()
     window.web_viewer.view.titleChanged.connect(
-        lambda _: window.setWindowTitle(f"Preview Browser - {window.web_viewer.get_webpage_title()} - {window.web_viewer.get_webpage_url()}")
+        lambda _: window.setWindowTitle(f"Preview Browser - {window.web_viewer.get_webpage_title()}")
     )
     window.web_viewer.view.iconChanged.connect(
         lambda _: window.setWindowIcon(window.web_viewer.get_webpage_icon())
+    )
+    window.web_viewer.view.titleChanged.connect(
+        lambda _: window.address_bar.set_address_bar_text(window.web_viewer.get_webpage_url())
     )
 
     sys.exit(app.exec())
