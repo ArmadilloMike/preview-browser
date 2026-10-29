@@ -107,11 +107,11 @@ class MainWindow(QMainWindow):
         self.addToolBar(self.address_bar)
 
         if initial_url:
-            print(f"got thingy {initial_url}")
+            self.web_viewer.set_url(initial_url)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Preview Browser")
-    parser.add_argument('--url', type=str, help='URL to pass to the browser')
+    parser.add_argument('--url', dest='text' ,type=str, help='URL to pass to the browser')
 
     args, qt_args = parser.parse_known_args()
 
