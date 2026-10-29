@@ -1,8 +1,9 @@
+from PySide6.QtGui import QIcon
 import pyperclip
 import webbrowser
 from PySide6.QtCore import QUrl
 from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtWidgets import QVBoxLayout, QMainWindow, QToolBar
+from PySide6.QtWidgets import QVBoxLayout, QMainWindow, QToolBar, QStyle
 import sys
 from PySide6 import QtWidgets, QtCore
 
@@ -53,17 +54,25 @@ class AddressBar(QToolBar):
         super().__init__()
         self.web_viewer = web_viewer
 
-        self.back_button = QtWidgets.QPushButton("Back", self)
+        self.back_button = QtWidgets.QPushButton("", self)
         self.back_button.clicked.connect(self.web_viewer.go_back)
+        back_icon = QIcon("assets/back_icon.svg")
+        self.back_button.setIcon(back_icon)
 
-        self.forward_button = QtWidgets.QPushButton("Forward", self)
+        self.forward_button = QtWidgets.QPushButton("", self)
         self.forward_button.clicked.connect(self.web_viewer.go_forward)
+        forward_icon = QIcon("assets/forward_icon.svg")
+        self.forward_button.setIcon(forward_icon)
 
         self.open_browser = QtWidgets.QPushButton("Open in Browser")
         self.open_browser.clicked.connect(lambda: open_in_browser(self.web_viewer.get_webpage_url()))
+        open_icon = QIcon("assets/open_browser_icon.svg")
+        self.open_browser.setIcon(open_icon)
 
         self.address_copy = QtWidgets.QPushButton("Copy to Clipboard")
         self.address_copy.clicked.connect(lambda: copy_to_clipboard(self.web_viewer.get_webpage_url()))
+        copy_icon = QIcon("assets/copy_icon.svg")
+        self.address_copy.setIcon(copy_icon)
 
         self.addWidget(self.back_button)
         self.addWidget(self.forward_button)
