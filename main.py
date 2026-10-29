@@ -1,7 +1,7 @@
-from PySide6.QtGui import QIcon
+from PySide6.QtGui import QIcon, QKeyEvent, QShortcut, QKeySequence
 import pyperclip
 import webbrowser
-from PySide6.QtCore import QUrl
+from PySide6.QtCore import QUrl, Qt
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWidgets import QVBoxLayout, QMainWindow, QToolBar, QStyle
 import sys
@@ -93,6 +93,9 @@ class AddressBar(QToolBar):
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+
+        self.shortcut_escape = QShortcut(QKeySequence(Qt.Key.Key_Escape), self)
+        self.shortcut_escape.activated.connect(self.close)
 
         self.setWindowTitle("Preview Browser")
         self.resize(800,600)
