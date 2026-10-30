@@ -1,5 +1,5 @@
 import re
-from PySide6.QtGui import QIcon, QKeyEvent, QShortcut, QKeySequence
+from PySide6.QtGui import QIcon, QKeyEvent, QShortcut, QKeySequence, QAction
 import pyperclip
 import webbrowser
 from PySide6.QtCore import QUrl, Qt
@@ -11,12 +11,20 @@ import argparse
 
 
 class WebViewer(QWebEngineView):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super().__init__(parent)
 
         self.load(QUrl("https://example.com"))
 
+    def contextMenuEvent(self, event):
+        menu = self.createStandardContextMenu()
+        menu.clear()
 
+        action = QAction("reload", self)
+        action.triggered.connect(lambda: self.reload_page())
+        menu.addAction(action)
+
+        menu.exec(event.globalPos())
     def go_back(self):
         self.back()
 
