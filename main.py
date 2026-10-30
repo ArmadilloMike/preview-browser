@@ -107,7 +107,7 @@ class MainWindow(QMainWindow):
         self.addToolBar(self.address_bar)
 
         if initial_url:
-            self.web_viewer.set_url(initial_url)
+            self.web_viewer.set_url(QtCore.QUrl(initial_url))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Preview Browser")
