@@ -106,6 +106,8 @@ class MainWindow(QMainWindow):
         self.address_bar = AddressBar(self.web_viewer)
         self.addToolBar(self.address_bar)
 
+        self.setWindowIcon(QIcon("assets/globe_icon.svg"))
+
         if initial_url:
             self.web_viewer.set_url(QtCore.QUrl(initial_url))
 
@@ -121,9 +123,6 @@ if __name__ == '__main__':
     window.show()
     window.web_viewer.view.titleChanged.connect(
         lambda _: window.setWindowTitle(f"Preview Browser - {window.web_viewer.get_webpage_title()}")
-    )
-    window.web_viewer.view.iconChanged.connect(
-        lambda _: window.setWindowIcon(window.web_viewer.get_webpage_icon())
     )
     window.web_viewer.view.titleChanged.connect(
         lambda _: window.address_bar.set_address_bar_text(window.web_viewer.get_webpage_url())
