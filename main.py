@@ -1,3 +1,4 @@
+import re
 from PySide6.QtGui import QIcon, QKeyEvent, QShortcut, QKeySequence
 import pyperclip
 import webbrowser
@@ -41,7 +42,6 @@ class WebViewer(QtWidgets.QWidget):
     def get_webpage_url(self):
         return self.view.url().toString()
 
-
 def open_in_browser(url):
     webbrowser.open(url)
     return "done"
@@ -65,6 +65,11 @@ class AddressBar(QToolBar):
         forward_icon = QIcon("assets/forward_icon.svg")
         self.forward_button.setIcon(forward_icon)
 
+        self.reload_button  = QtWidgets.QPushButton("")
+        self.reload_button.clicked.connect(self.web_viewer.reload_page)
+        reload_icon = QIcon("assets/reload_icon.svg")
+        self.reload_button.setIcon(reload_icon)
+
         self.address_bar = QtWidgets.QLineEdit()
         self.address_bar.setReadOnly(True)
         self.address_bar.setPlaceholderText("https://example.com")
@@ -82,6 +87,7 @@ class AddressBar(QToolBar):
 
         self.addWidget(self.back_button)
         self.addWidget(self.forward_button)
+        self.addWidget(self.reload_button)
         self.addWidget(self.address_bar)
         self.addWidget(self.open_browser)
         self.addWidget(self.address_copy)
