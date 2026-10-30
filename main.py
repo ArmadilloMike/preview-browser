@@ -149,6 +149,11 @@ if __name__ == '__main__':
 
     app = QtWidgets.QApplication([sys.argv[0]] + qt_args)
 
+    is_dark = app.styleHints().colorScheme() == Qt.ColorScheme.Dark
+
+    if is_dark:
+        app.styleHints().setColorScheme(Qt.ColorScheme.Dark)
+
     window = MainWindow(initial_url=args.text)
     window.show()
     window.web_viewer.titleChanged.connect(
