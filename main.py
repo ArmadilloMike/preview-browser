@@ -10,37 +10,33 @@ from PySide6 import QtWidgets, QtCore
 import argparse
 
 
-class WebViewer(QtWidgets.QWidget):
+class WebViewer(QWebEngineView):
     def __init__(self):
         super().__init__()
 
-        self.view = QWebEngineView()
-        self.view.load(QUrl("https://example.com"))
+        self.load(QUrl("https://example.com"))
 
-        layout = QVBoxLayout(self)
-        layout.addWidget(self.view)
-        self.setLayout(layout)
 
     def go_back(self):
-        self.view.back()
+        self.back()
 
     def go_forward(self):
-        self.view.forward()
+        self.forward()
 
     def reload_page(self):
-        self.view.reload()
+        self.reload()
 
     def set_url(self, url):
-        self.view.setUrl(QUrl.url(url))
+        self.setUrl(QUrl.url(url))
 
     def get_webpage_title(self):
-        return self.view.title()
+        return self.title()
 
     def get_webpage_icon(self):
-        return self.view.icon()
+        return self.icon()
 
     def get_webpage_url(self):
-        return self.view.url().toString()
+        return self.url().toString()
 
 def open_in_browser(url):
     webbrowser.open(url)
@@ -127,10 +123,10 @@ if __name__ == '__main__':
 
     window = MainWindow(initial_url=args.text)
     window.show()
-    window.web_viewer.view.titleChanged.connect(
+    window.web_viewer.titleChanged.connect(
         lambda _: window.setWindowTitle(f"Preview Browser - {window.web_viewer.get_webpage_title()}")
     )
-    window.web_viewer.view.titleChanged.connect(
+    window.web_viewer.titleChanged.connect(
         lambda _: window.address_bar.set_address_bar_text(window.web_viewer.get_webpage_url())
     )
 
