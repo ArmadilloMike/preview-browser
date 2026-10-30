@@ -15,6 +15,14 @@ reload_icon = QIcon("assets/reload_icon.svg")
 open_icon = QIcon("assets/open_browser_icon.svg")
 copy_icon = QIcon("assets/copy_icon.svg")
 
+def open_in_browser(url):
+    webbrowser.open(url)
+    return None
+
+def copy_to_clipboard(text):
+    pyperclip.copy(text)
+    return None
+
 class WebViewer(QWebEngineView):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -25,9 +33,29 @@ class WebViewer(QWebEngineView):
         menu = self.createStandardContextMenu()
         menu.clear()
 
-        action = QAction("reload", self)
-        action.triggered.connect(lambda: self.reload_page())
-        menu.addAction(action)
+        back_action = QAction("Back", self, icon=back_icon)
+        back_action.triggered.connect(self.go_back)
+        menu.addAction(back_action)
+
+        forward_action = QAction("Forward", self, icon=forward_icon)
+        forward_action.triggered.connect(self.go_forward)
+        menu.addAction(forward_action)
+
+        menu.addSeparator()
+
+        reload_action = QAction("Reload", self, icon=reload_icon)
+        reload_action.triggered.connect(self.reload_page)
+        menu.addAction(reload_action)
+
+        menu.addSeparator()
+
+        open_browser_action = QAction("Open in Browser", self, icon=open_icon)
+        open_browser_action.triggered.connect(lambda: open_in_browser(self.get_webpage_url()))
+        menu.addAction(open_browser_action)
+
+        address_copy_action = QAction("Copy URL to Clipboard", self, icon=copy_icon)
+        address_copy_action.triggered.connect(lambda: copy_to_clipboard(self.get_webpage_url()))
+        menu.addAction(address_copy_action)
 
         menu.exec(event.globalPos())
     def go_back(self):
@@ -50,14 +78,6 @@ class WebViewer(QWebEngineView):
 
     def get_webpage_url(self):
         return self.url().toString()
-
-def open_in_browser(url):
-    webbrowser.open(url)
-    return "done"
-
-def copy_to_clipboard(text):
-    pyperclip.copy(text)
-    return "done"
 
 class AddressBar(QToolBar):
     def __init__(self, web_viewer):
