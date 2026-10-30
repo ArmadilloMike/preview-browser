@@ -1,13 +1,14 @@
-import re
-from PySide6.QtGui import QIcon, QKeyEvent, QShortcut, QKeySequence, QAction
+import os
+from PySide6.QtGui import QIcon, QShortcut, QKeySequence, QAction
 import pyperclip
 import webbrowser
 from PySide6.QtCore import QUrl, Qt
 from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtWidgets import QVBoxLayout, QMainWindow, QToolBar, QStyle
+from PySide6.QtWidgets import QMainWindow, QToolBar
 import sys
 from PySide6 import QtWidgets, QtCore
 import argparse
+os.environ["QTWEBENGINE_CHROMIUM_FLAGS"] = "--blink-settings=preferredColorScheme=1"
 
 back_icon = QIcon("assets/back_icon.svg")
 forward_icon = QIcon("assets/forward_icon.svg")
@@ -27,7 +28,7 @@ class WebViewer(QWebEngineView):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        self.load(QUrl("https://example.com"))
+        self.load(QUrl("https://google.com"))
 
     def contextMenuEvent(self, event):
         menu = self.createStandardContextMenu()
@@ -148,9 +149,9 @@ if __name__ == '__main__':
     args, qt_args = parser.parse_known_args()
 
     app = QtWidgets.QApplication([sys.argv[0]] + qt_args)
+    app.styleHints().setColorScheme(Qt.ColorScheme.Dark)
 
-    is_dark = app.styleHints().colorScheme() == Qt.ColorScheme.Dark
-
+    is_dark = True
     if is_dark:
         app.styleHints().setColorScheme(Qt.ColorScheme.Dark)
 
