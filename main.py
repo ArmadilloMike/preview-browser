@@ -1,3 +1,5 @@
+from this import d
+import darkdetect
 import os
 from PySide6.QtGui import QIcon, QShortcut, QKeySequence, QAction
 import pyperclip
@@ -10,11 +12,11 @@ from PySide6 import QtWidgets, QtCore
 import argparse
 os.environ["QTWEBENGINE_CHROMIUM_FLAGS"] = "--blink-settings=preferredColorScheme=1"
 
-back_icon = QIcon("assets/back_icon.svg")
-forward_icon = QIcon("assets/forward_icon.svg")
-reload_icon = QIcon("assets/reload_icon.svg")
-open_icon = QIcon("assets/open_browser_icon.svg")
-copy_icon = QIcon("assets/copy_icon.svg")
+back_icon = QIcon("assets/light/back_icon.svg")
+forward_icon = QIcon("assets/light/forward_icon.svg")
+reload_icon = QIcon("assets/light/reload_icon.svg")
+open_icon = QIcon("assets/light/open_browser_icon.svg")
+copy_icon = QIcon("assets/light/copy_icon.svg")
 
 def open_in_browser(url):
     webbrowser.open(url)
@@ -137,7 +139,7 @@ class MainWindow(QMainWindow):
         self.address_bar = AddressBar(self.web_viewer)
         self.addToolBar(self.address_bar)
 
-        self.setWindowIcon(QIcon("assets/globe_icon.svg"))
+        self.setWindowIcon(QIcon("assets/light/globe_icon.svg"))
 
         if initial_url:
             self.web_viewer.set_url(QtCore.QUrl(initial_url))
@@ -151,9 +153,13 @@ if __name__ == '__main__':
     app = QtWidgets.QApplication([sys.argv[0]] + qt_args)
     app.styleHints().setColorScheme(Qt.ColorScheme.Dark)
 
-    is_dark = True
-    if is_dark:
+    if darkdetect.isDark():
         app.styleHints().setColorScheme(Qt.ColorScheme.Dark)
+        back_icon = QIcon("assets/dark/back_icon.svg")
+        forward_icon = QIcon("assets/dark/forward_icon.svg")
+        reload_icon = QIcon("assets/dark/reload_icon.svg")
+        open_icon = QIcon("assets/dark/open_browser_icon.svg")
+        copy_icon = QIcon("assets/dark/copy_icon.svg")
 
     window = MainWindow(initial_url=args.text)
     window.show()
