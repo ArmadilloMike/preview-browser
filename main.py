@@ -10,13 +10,22 @@ from PySide6.QtWidgets import QMainWindow, QToolBar
 import sys
 from PySide6 import QtWidgets, QtCore
 import argparse
-os.environ["QTWEBENGINE_CHROMIUM_FLAGS"] = "--blink-settings=preferredColorScheme=1"
 
-back_icon = QIcon("assets/light/back_icon.svg")
-forward_icon = QIcon("assets/light/forward_icon.svg")
-reload_icon = QIcon("assets/light/reload_icon.svg")
-open_icon = QIcon("assets/light/open_browser_icon.svg")
-copy_icon = QIcon("assets/light/copy_icon.svg")
+if darkdetect.isDark():
+    back_icon = QIcon("assets/dark/back_icon.svg")
+    forward_icon = QIcon("assets/dark/forward_icon.svg")
+    reload_icon = QIcon("assets/dark/reload_icon.svg")
+    open_icon = QIcon("assets/dark/open_browser_icon.svg")
+    copy_icon = QIcon("assets/dark/copy_icon.svg")
+    os.environ["QTWEBENGINE_CHROMIUM_FLAGS"] = (
+        "--force-dark-mode --blink-settings=darkMode=4"
+    )
+else:
+    back_icon = QIcon("assets/light/back_icon.svg")
+    forward_icon = QIcon("assets/light/forward_icon.svg")
+    reload_icon = QIcon("assets/light/reload_icon.svg")
+    open_icon = QIcon("assets/light/open_browser_icon.svg")
+    copy_icon = QIcon("assets/light/copy_icon.svg")
 
 def open_in_browser(url):
     webbrowser.open(url)
@@ -151,15 +160,9 @@ if __name__ == '__main__':
     args, qt_args = parser.parse_known_args()
 
     app = QtWidgets.QApplication([sys.argv[0]] + qt_args)
-    app.styleHints().setColorScheme(Qt.ColorScheme.Dark)
 
     if darkdetect.isDark():
         app.styleHints().setColorScheme(Qt.ColorScheme.Dark)
-        back_icon = QIcon("assets/dark/back_icon.svg")
-        forward_icon = QIcon("assets/dark/forward_icon.svg")
-        reload_icon = QIcon("assets/dark/reload_icon.svg")
-        open_icon = QIcon("assets/dark/open_browser_icon.svg")
-        copy_icon = QIcon("assets/dark/copy_icon.svg")
 
     window = MainWindow(initial_url=args.text)
     window.show()
