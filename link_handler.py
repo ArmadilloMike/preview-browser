@@ -3,6 +3,9 @@ import ctypes
 import subprocess
 import sys
 
+preview_apps = ["Slack.exe"]
+regular_browser_path = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+
 def get_active_app():
     try:
         handle = ctypes.windll.user32.GetForegroundWindow()
@@ -32,8 +35,10 @@ def main():
     if len(sys.argv) > 1:
         target_url = sys.argv[1]
 
-    arguments = ["--url", target_url]
-
-    subprocess.Popen([browser_path] + arguments)
+    if originating_app["name"] in preview_apps:
+        arguments = ["--url", target_url]
+        subprocess.Popen([browser_path] + arguments)
+    else:
+        subprocess.Popen([regular_browser_path, target_url])
 if __name__ == '__main__':
     main()
