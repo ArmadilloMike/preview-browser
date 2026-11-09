@@ -27,7 +27,7 @@ def get_active_app():
 def main():
     originating_app = get_active_app()
     browser_path = r'C:\Users\1744304\PycharmProjects\preview-browser\dist\Preview-Browser.exe'
-    target_url = "https://google.com"
+    target_url = f"https://google.com/search?q={originating_app["name"]}"
 
     if len(sys.argv) > 1:
         target_url = sys.argv[1]
