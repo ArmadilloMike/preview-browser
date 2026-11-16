@@ -1,3 +1,7 @@
+import socket
+import threading
+import json
+
 import pystray
 import os
 import re
@@ -12,26 +16,18 @@ from PIL import Image, ImageDraw
 
 preview_apps = ["Slack.exe"]
 regular_browser_path = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+preview_browser_path = r'C:\Users\1744304\PycharmProjects\preview-browser\dist\Preview-Browser.exe'
 
-# System Tray Icon
-def create_image():
-    image = Image.new('RGB', (64, 64), color=(30, 144, 255))
-    dc = ImageDraw.Draw(image)
-    dc.rectangle((16, 16, 48, 48), fill=(255, 255, 255))
-    return image
+HOST = "127.0.0.1"
+PORT = 42053
+server_socket = None
 
-def on_exit(icon, item):
-    icon.stop()
-
-menu = pystray.Menu(
-    pystray.MenuItem("Exit", on_exit)
-)
-icon = pystray.Icon(
-    name="PreviewBrowser",
-    icon=create_image(),
-    title="Preview Browser and Link Router",
-    menu=menu
-)
+def route_url(url: str, preview = False):
+    if preview:
+        arguments = ["--url", url]
+        subprocess.Popen([preview_browser_path] + arguments)
+    else:
+        subprocess.Popen([regular_browser_path, url])
 
 def get_active_app():
     try:
@@ -51,7 +47,66 @@ def get_active_app():
             "exe": proc.exe()
         }
     except Exception as e:
-        return f"error: {e}"
+        return None
+
+def process_incoming_click(url, app_info):
+    app_name = app_info.get("name") if isinstance(app_info, dict) else None
+
+    if not url:
+        url = "https://google.com/"
+
+    if app_name in preview_apps:
+        route_url(url, preview=True)
+    else:
+        route_url(url, preview=False)
+
+def socket_listener():
+    while True:
+        try:
+            conn, _ = server_socket.accept()
+            with conn:
+                data = conn.recv(4096)
+                if data:
+                    payload = json.loads(data.decode("utf-8"))
+                    url = payload.get("url")
+                    app_info = payload.get("app_info")
+                    threading.Thread(target=process_incoming_click, args=(url, app_info), daemon=True).start()
+        except OSError:
+            break
+
+def forward_to_running_instance(url, app_info):
+    try:
+        payload = json.dumps({"url": url, "app_info": app_info}).encode("utf-8")
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client:
+            client.settimeout(2.0)
+            client.connect((HOST, PORT))
+            client.sendall(payload)
+    except Exception:
+        process_incoming_click(url, app_info)
+    sys.exit(0)
+
+# System Tray Icon
+def create_image():
+    image = Image.new('RGB', (64, 64), color=(30, 144, 255))
+    dc = ImageDraw.Draw(image)
+    dc.rectangle((16, 16, 48, 48), fill=(255, 255, 255))
+    return image
+
+def on_exit(icon, item):
+    if server_socket:
+        server_socket.close()
+    icon.stop()
+    os._exit(0)
+
+menu = pystray.Menu(
+    pystray.MenuItem("Exit", on_exit)
+)
+icon = pystray.Icon(
+    name="PreviewBrowser",
+    icon=create_image(),
+    title="Preview Browser and Link Router",
+    menu=menu
+)
 
 def find_all_installed_browsers():
     browsers = []
@@ -79,18 +134,23 @@ def find_all_installed_browsers():
     return browsers
 
 def main():
+    global server_socket
+
     originating_app = get_active_app()
-    browser_path = r'C:\Users\1744304\PycharmProjects\preview-browser\dist\Preview-Browser.exe'
-    target_url = f"https://google.com/search?q={originating_app["name"]}"
+    target_url = sys.argv[1] if len(sys.argv) > 1 else None
+
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        server_socket.bind((HOST, PORT))
+        server_socket.listen(5)
+    except OSError:
+        forward_to_running_instance(target_url, originating_app)
+
+    threading.Thread(target=socket_listener, daemon=True).start()
+
+    if target_url:
+        threading.Thread(target=process_incoming_click, args=(target_url, originating_app), daemon=True).start()
+
     icon.run()
-
-    if len(sys.argv) > 1:
-        target_url = sys.argv[1]
-
-    if originating_app["name"] in preview_apps:
-        arguments = ["--url", target_url]
-        subprocess.Popen([browser_path] + arguments)
-    else:
-        subprocess.Popen([regular_browser_path, target_url])
 if __name__ == '__main__':
     main()
