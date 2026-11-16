@@ -62,7 +62,7 @@ def process_incoming_click(url, app_info):
 def socket_listener():
     while True:
         try:
-            conn, _ = server_socket.accept()
+            conn, _ = server_socket.accept()  # ty: ignore[unresolved-attribute]
             with conn:
                 data = conn.recv(4096)
                 if data:
