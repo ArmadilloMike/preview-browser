@@ -1,7 +1,6 @@
 import socket
 import threading
 import json
-
 import pystray
 import os
 import re
