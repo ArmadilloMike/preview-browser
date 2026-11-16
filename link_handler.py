@@ -1,3 +1,4 @@
+import pystray
 import os
 import re
 import winreg
@@ -7,8 +8,30 @@ import ctypes
 import subprocess
 import sys
 
+from PIL import Image, ImageDraw
+
 preview_apps = ["Slack.exe"]
 regular_browser_path = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+
+# System Tray Icon
+def create_image():
+    image = Image.new('RGB', (64, 64), color=(30, 144, 255))
+    dc = ImageDraw.Draw(image)
+    dc.rectangle((16, 16, 48, 48), fill=(255, 255, 255))
+    return image
+
+def on_exit(icon, item):
+    icon.stop()
+
+menu = pystray.Menu(
+    pystray.MenuItem("Exit", on_exit)
+)
+icon = pystray.Icon(
+    name="PreviewBrowser",
+    icon=create_image(),
+    title="Preview Browser and Link Router",
+    menu=menu
+)
 
 def get_active_app():
     try:
@@ -59,6 +82,7 @@ def main():
     originating_app = get_active_app()
     browser_path = r'C:\Users\1744304\PycharmProjects\preview-browser\dist\Preview-Browser.exe'
     target_url = f"https://google.com/search?q={originating_app["name"]}"
+    icon.run()
 
     if len(sys.argv) > 1:
         target_url = sys.argv[1]
