@@ -12,26 +12,26 @@ import sys
 
 def resource_path(path):
     try:
-        base_path = sys._MEIPASS
+        base_path = sys._MEIPASS  # ty: ignore[unresolved-attribute]
     except AttributeError:
         base_path = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(base_path, path)
 
 if darkdetect.isDark():
-    back_icon = QIcon("assets/dark/back_icon.svg")
-    forward_icon = QIcon("assets/dark/forward_icon.svg")
-    reload_icon = QIcon("assets/dark/reload_icon.svg")
-    open_icon = QIcon("assets/dark/open_browser_icon.svg")
-    copy_icon = QIcon("assets/dark/copy_icon.svg")
+    back_icon = QIcon(resource_path("assets/dark/back_icon.svg"))
+    forward_icon = QIcon(resource_path("assets/dark/forward_icon.svg"))
+    reload_icon = QIcon(resource_path("assets/dark/reload_icon.svg"))
+    open_icon = QIcon(resource_path("assets/dark/open_browser_icon.svg"))
+    copy_icon = QIcon(resource_path("assets/dark/copy_icon.svg"))
     os.environ["QTWEBENGINE_CHROMIUM_FLAGS"] = (
         "--force-dark-mode --blink-settings=darkMode=4"
     )
 else:
-    back_icon = QIcon("assets/light/back_icon.svg")
-    forward_icon = QIcon("assets/light/forward_icon.svg")
-    reload_icon = QIcon("assets/light/reload_icon.svg")
-    open_icon = QIcon("assets/light/open_browser_icon.svg")
-    copy_icon = QIcon("assets/light/copy_icon.svg")
+    back_icon = QIcon(resource_path("assets/light/back_icon.svg"))
+    forward_icon = QIcon(resource_path("assets/light/forward_icon.svg"))
+    reload_icon = QIcon(resource_path("assets/light/reload_icon.svg"))
+    open_icon = QIcon(resource_path("assets/light/open_browser_icon.svg"))
+    copy_icon = QIcon(resource_path("assets/light/copy_icon.svg"))
 
 def open_in_browser(url):
     webbrowser.open(url)
@@ -154,7 +154,7 @@ class MainWindow(QMainWindow):
         self.address_bar = AddressBar(self.web_viewer)
         self.addToolBar(self.address_bar)
 
-        self.setWindowIcon(QIcon("assets/light/globe_icon.svg"))
+        self.setWindowIcon(QIcon(resource_path("assets/light/globe_icon.svg")))
 
         if initial_url:
             self.web_viewer.set_url(QtCore.QUrl(initial_url))
