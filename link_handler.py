@@ -1,3 +1,4 @@
+import time
 import socket
 import threading
 import json
@@ -5,13 +6,12 @@ import pystray
 import os
 import re
 import winreg
-
 import psutil
 import ctypes
 import subprocess
 import sys
-
 from PIL import Image, ImageDraw
+import pygetwindow
 
 preview_apps = ["Slack.exe"]
 regular_browser_path = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
@@ -25,6 +25,15 @@ def route_url(url: str, preview = False):
     if preview:
         arguments = ["--url", url]
         subprocess.Popen([preview_browser_path] + arguments)
+        time.sleep(0.5)
+        windows = pygetwindow.getWindowsWithTitle("Preview Browser")
+        if windows:
+            win = windows[0]
+            if win.isMinimized:
+                win.restore()
+            ctypes.windll.user32.keybd_event(0x12, 0, 0, 0)
+            ctypes.windll.user32.keybd_event(0x12, 0, 2, 0)
+            win.activate()
     else:
         subprocess.Popen([regular_browser_path, url])
 
