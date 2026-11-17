@@ -6,9 +6,16 @@ import webbrowser
 from PySide6.QtCore import QUrl, Qt
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWidgets import QMainWindow, QToolBar
-import sys
 from PySide6 import QtWidgets, QtCore
 import argparse
+import sys
+
+def resource_path(path):
+    try:
+        base_path = sys._MEIPASS
+    except AttributeError:
+        base_path = os.path.dirname(os.path.abspath(__file__))
+    return os.path.join(base_path, path)
 
 if darkdetect.isDark():
     back_icon = QIcon("assets/dark/back_icon.svg")
