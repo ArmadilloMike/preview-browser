@@ -39,7 +39,7 @@ class WebViewer(QWebEngineView):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        self.load(QUrl("https://google.com"))
+        self.load(QUrl("about:blank"))
 
     def contextMenuEvent(self, event):
         menu = self.createStandardContextMenu()
