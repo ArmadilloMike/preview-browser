@@ -1,4 +1,3 @@
-from this import d
 import darkdetect
 import os
 from PySide6.QtGui import QIcon, QShortcut, QKeySequence, QAction
