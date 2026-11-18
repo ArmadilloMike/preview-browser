@@ -14,8 +14,8 @@ from PIL import Image, ImageDraw
 import pygetwindow
 
 preview_apps = ["Slack.exe"]
-regular_browser_path = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-preview_browser_path = r"C:\Users\1744304\PycharmProjects\preview-browser\dist\preview-browser\preview-browser.exe"
+regular_browser_path = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
+preview_browser_path = "C:\\Users\\1744304\\PycharmProjects\\preview-browser\\dist\\preview-browser\\mpreview-browser.exe"
 
 HOST = "127.0.0.1"
 PORT = 42053
