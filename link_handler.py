@@ -21,6 +21,8 @@ HOST = "127.0.0.1"
 PORT = 42053
 server_socket = None
 
+# Routing
+
 def route_url(url: str, preview = False):
     if preview:
         arguments = ["--url", url]
@@ -68,6 +70,8 @@ def process_incoming_click(url, app_info):
     else:
         route_url(url, preview=False)
 
+# Sockets
+
 def socket_listener():
     while True:
         try:
@@ -94,6 +98,7 @@ def forward_to_running_instance(url, app_info):
     sys.exit(0)
 
 # System Tray Icon
+
 def create_image():
     image = Image.new('RGB', (64, 64), color=(30, 144, 255))
     dc = ImageDraw.Draw(image)
