@@ -10,7 +10,7 @@ def load_config():
             data = json.load(file)
         preview_apps = data["preview-apps"]
         regular_browser = data["regular-browser-path"]
-        preview_browser = data["preview-bowser-path"]
+        preview_browser = data["preview-browser-path"]
     except FileNotFoundError:
         preview_apps = ["Slack.exe"]
         regular_browser = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
