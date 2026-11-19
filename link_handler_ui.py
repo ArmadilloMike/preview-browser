@@ -6,6 +6,38 @@ from pathlib import Path
 import tkinter as tk
 from tkinter import ttk, filedialog
 
+# helper functions:
+def find_all_installed_browsers() -> list[str]:
+    browsers = []
+    reg_paths = [
+        (winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\Clients\StartMenuInternet"),
+        (winreg.HKEY_CURRENT_USER, r"SOFTWARE\Clients\StartMenuInternet")
+    ]
+    for hive, base_path in reg_paths:
+        try:
+            with winreg.OpenKey(hive, base_path) as base_key:
+                for i in range(winreg.QueryInfoKey(base_key)[0]):
+                    subkey_name = winreg.EnumKey(base_key, i)
+                    try:
+                        cmd_path = fr"{base_path}\{subkey_name}\shell\open\command"
+                        with winreg.OpenKey(hive, cmd_path) as cmd_key:
+                            raw_command = winreg.QueryValue(cmd_key, None)
+                            clean_path = re.sub(r'(^"[^"]+"|^\S+).*', r'\1', raw_command).strip('"')
+
+                            if os.path.exists(clean_path) and clean_path not in browsers:
+                                browsers.append(clean_path)
+                    except Exception:
+                        continue
+        except Exception:
+            continue
+    installed_browsers = []
+    for browser in browsers:
+        if not "link-handler.exe" in browser:
+            installed_browsers.append(browser)
+    return installed_browsers
+
+# config stuff
+
 CONFIG_LOCATION = Path(os.path.expandvars(r"%APPDATA%\PreviewBrowser\config.json"))
 
 def load_config():
@@ -20,7 +52,6 @@ def load_config():
         regular_browser = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
         preview_browser = "C:\\Users\\1744304\\PycharmProjects\\preview-browser\\dist\\preview-browser\\preview-browser.exe"
     return preview_apps, regular_browser, preview_browser
-
 def save_config(preview_apps = None, regular_browser = None, preview_browser = None):
     config_data = {
         "preview-apps": preview_apps,
@@ -30,6 +61,8 @@ def save_config(preview_apps = None, regular_browser = None, preview_browser = N
     CONFIG_LOCATION.parent.mkdir(parents=True, exist_ok=True)
     with open(CONFIG_LOCATION, "w", encoding="utf-8") as file:
         json.dump(config_data, file, indent=4)
+
+# ui stuff
 
 class ConfigWindow(tk.Toplevel):
     def __init__(self, parent, on_save_callback=None):
@@ -112,31 +145,7 @@ class ConfigWindow(tk.Toplevel):
             self.on_save_callback()
         self.destroy()
 
-def find_all_installed_browsers() -> list[str]:
-    browsers = []
-    reg_paths = [
-        (winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\Clients\StartMenuInternet"),
-        (winreg.HKEY_CURRENT_USER, r"SOFTWARE\Clients\StartMenuInternet")
-    ]
-    for hive, base_path in reg_paths:
-        try:
-            with winreg.OpenKey(hive, base_path) as base_key:
-                for i in range(winreg.QueryInfoKey(base_key)[0]):
-                    subkey_name = winreg.EnumKey(base_key, i)
-                    try:
-                        cmd_path = fr"{base_path}\{subkey_name}\shell\open\command"
-                        with winreg.OpenKey(hive, cmd_path) as cmd_key:
-                            raw_command = winreg.QueryValue(cmd_key, None)
-                            clean_path = re.sub(r'(^"[^"]+"|^\S+).*', r'\1', raw_command).strip('"')
 
-                            if os.path.exists(clean_path) and clean_path not in browsers:
-                                browsers.append(clean_path)
-                    except Exception:
-                        continue
-        except Exception:
-            continue
-    installed_browsers = []
-    for browser in browsers:
-        if not "link-handler.exe" in browser:
-            installed_browsers.append(browser)
-    return installed_browsers
+if __name__ == '__main__':
+    for browser in find_all_installed_browsers():
+        print(browser)
