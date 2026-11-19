@@ -135,4 +135,8 @@ def find_all_installed_browsers() -> list[str]:
                         continue
         except Exception:
             continue
-    return browsers
+    installed_browsers = []
+    for browser in browsers:
+        if not "link-handler.exe" in browser:
+            installed_browsers.append(browser)
+    return installed_browsers
