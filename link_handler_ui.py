@@ -89,7 +89,12 @@ class ConfigWindow(tk.Toplevel):
         frame.pack(fill="both", expand=True)
 
         ttk.Label(frame, text="Regular Browser Path:").grid(row=0, column=0, sticky="w")
-        ttk.Entry(frame, textvariable=self.reg_browser_var, width=55).grid(row=1, column=0, pady=(2, 10), padx=(0, 5))
+        installed_browsers = find_all_installed_browsers()
+        current_reg  = self.reg_browser_var.get()
+        if current_reg and current_reg not in installed_browsers:
+            installed_browsers.insert(0, current_reg)
+        self.reg_browser_combo = ttk.Combobox(frame, textvariable=self.reg_browser_var, values=installed_browsers, width=52)
+        self.reg_browser_combo.grid(row=1, column=0, pady=(2,10), padx=(0,5), sticky="we")
         ttk.Button(frame, text="Browse...", command=lambda: self.browse_exe(self.reg_browser_var)).grid(row=1, column=1, pady=(2,10))
 
         ttk.Label(frame, text="Preview Browser Path:").grid(row=2, column=0, sticky="w")
