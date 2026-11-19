@@ -4,22 +4,41 @@ import threading
 import json
 import pystray
 import os
-import re
-import winreg
 import psutil
 import ctypes
 import subprocess
 import sys
+import tkinter as tk
 from PIL import Image, ImageDraw
 import pygetwindow
+from link_handler_ui import ConfigWindow
 
 preview_apps = ["Slack.exe"]
 regular_browser_path = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
 preview_browser_path = "C:\\Users\\1744304\\PycharmProjects\\preview-browser\\dist\\preview-browser\\mpreview-browser.exe"
 
+CONFIG_LOCATION = os.path.expandvars(r"%APPDATA%\PreviewBrowser\config.json")
+
 HOST = "127.0.0.1"
 PORT = 42053
 server_socket = None
+
+
+# Configuration
+
+def load_config():
+    global preview_apps, regular_browser_path, preview_browser_path
+
+    try:
+        with open(CONFIG_LOCATION, "r", encoding="utf-8") as file:
+            data = json.load(file)
+
+        preview_apps = data["preview-apps"]
+        regular_browser_path = data["regular-browser-path"]
+        preview_browser_path = data["preview-browser-path"]
+    except (FileNotFoundError, json.JSONDecodeError, KeyError):
+        pass
+
 
 # Routing
 
@@ -56,7 +75,7 @@ def get_active_app():
             "name": proc.name(),
             "exe": proc.exe()
         }
-    except Exception as e:
+    except Exception:
         return None
 
 def process_incoming_click(url, app_info):
@@ -105,6 +124,30 @@ def create_image():
     dc.rectangle((16, 16, 48, 48), fill=(255, 255, 255))
     return image
 
+
+def open_config_window(icon, item):
+    def show_window():
+        root = tk.Tk()
+        root.withdraw()
+        root.lift()
+
+        def close_root():
+            root.destroy()
+
+        ConfigWindow(
+            root,
+            on_save_callback=lambda: (
+                load_config(),
+                close_root()
+            ),
+            on_close_callback=close_root
+        )
+
+        root.mainloop()
+
+    threading.Thread(target=show_window, daemon=True).start()
+
+
 def on_exit(icon, item):
     if server_socket:
         server_socket.close()
@@ -112,6 +155,7 @@ def on_exit(icon, item):
     os._exit(0)
 
 menu = pystray.Menu(
+    pystray.MenuItem("Configure", open_config_window),
     pystray.MenuItem("Exit", on_exit)
 )
 icon = pystray.Icon(
@@ -123,6 +167,8 @@ icon = pystray.Icon(
 
 def main():
     global server_socket
+
+    load_config()
 
     originating_app = get_active_app()
     target_url = sys.argv[1] if len(sys.argv) > 1 else None
