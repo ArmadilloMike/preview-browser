@@ -112,7 +112,7 @@ class ConfigWindow(tk.Toplevel):
             self.on_save_callback()
         self.destroy()
 
-def find_all_installed_browsers():
+def find_all_installed_browsers() -> list[str]:
     browsers = []
     reg_paths = [
         (winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\Clients\StartMenuInternet"),
