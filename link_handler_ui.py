@@ -97,10 +97,6 @@ class ConfigWindow(tk.Toplevel):
         self.reg_browser_combo.grid(row=1, column=0, pady=(2,10), padx=(0,5), sticky="we")
         ttk.Button(frame, text="Browse...", command=lambda: self.browse_exe(self.reg_browser_var)).grid(row=1, column=1, pady=(2,10))
 
-        ttk.Label(frame, text="Preview Browser Path:").grid(row=2, column=0, sticky="w")
-        ttk.Entry(frame, textvariable=self.prev_browser_var, width=55).grid(row=3, column=0, pady=(2, 15), padx=(0, 5))
-        ttk.Button(frame, text="Browse...", command=lambda: self.browse_exe(self.prev_browser_var)).grid(row=3, column=1, pady=(2, 15))
-
         ttk.Label(frame, text="Preview Apps (Slack.exe)").grid(row=4, column=0, sticky="w")
         add_frame = ttk.Frame(frame)
         add_frame.grid(row=5, column=0, columnspan=2, sticky="we", pady=(2, 5))
