@@ -75,6 +75,7 @@ class ConfigWindow(tk.Toplevel):
         self.grab_set()
 
         self.on_save_callback = on_save_callback
+        self.on_close_callback = on_close_callback
 
         apps, reg_browser, prev_browser = load_config()
 
@@ -83,6 +84,8 @@ class ConfigWindow(tk.Toplevel):
         self.new_app_var = tk.StringVar()
 
         self.create_widgets(apps)
+
+        self.protocol("WM_DELETE_WINDOW", self.close_window)
 
     def create_widgets(self, initial_apps):
         frame = ttk.Frame(self, padding="15")
@@ -111,6 +114,18 @@ class ConfigWindow(tk.Toplevel):
 
         btn_frame = ttk.Frame(frame)
         btn_frame.grid(row=7, column=0, columnspan=2, sticky="e")
+
+        ttk.Button(
+            btn_frame,
+            text="Cancel",
+            command=self.close_window
+        ).pack(side="right", padx=(5, 0))
+
+        ttk.Button(
+            btn_frame,
+            text="Save",
+            command=self.save_and_close
+        ).pack(side="right")
         ttk.Button(btn_frame, text="Cancel", command=self.destroy).pack(side="right", padx=(5, 0))
         ttk.Button(btn_frame, text="Save", command=self.save_and_close).pack(side="right")
 
@@ -133,6 +148,12 @@ class ConfigWindow(tk.Toplevel):
         if selected:
             self.apps_listbox.delete(selected[0])
 
+    def close_window(self):
+        self.destroy()
+
+        if self.on_close_callback:
+            self.on_close_callback()
+
     def save_and_close(self):
         apps_list = list(self.apps_listbox.get(0, tk.END))
 
@@ -142,11 +163,12 @@ class ConfigWindow(tk.Toplevel):
             preview_browser=self.prev_browser_var.get()
         )
 
-        if self.on_save_callback:
-            self.on_save_callback()
         self.destroy()
 
+        if self.on_save_callback:
+            self.on_save_callback()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     for browser in find_all_installed_browsers():
         print(browser)
