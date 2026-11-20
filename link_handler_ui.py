@@ -115,17 +115,6 @@ class ConfigWindow(tk.Toplevel):
         btn_frame = ttk.Frame(frame)
         btn_frame.grid(row=7, column=0, columnspan=2, sticky="e")
 
-        ttk.Button(
-            btn_frame,
-            text="Cancel",
-            command=self.close_window
-        ).pack(side="right", padx=(5, 0))
-
-        ttk.Button(
-            btn_frame,
-            text="Save",
-            command=self.save_and_close
-        ).pack(side="right")
         ttk.Button(btn_frame, text="Cancel", command=self.destroy).pack(side="right", padx=(5, 0))
         ttk.Button(btn_frame, text="Save", command=self.save_and_close).pack(side="right")
 
