@@ -68,6 +68,7 @@ class ConfigWindow(tk.Tk):
     def __init__(self, on_save_callback=None):
         super().__init__()
         self.title("Preview Browser Config")
+        self.transient(parent)
         self.geometry("600x360")
         self.resizable(False, False)
 
