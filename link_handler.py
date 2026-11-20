@@ -126,19 +126,14 @@ def create_image():
 
 
 def open_config_window(icon, item):
-    root = tk.Tk()
-    root.deiconify()
-    root.lift()
-    root.focus_force()
-
-    ConfigWindow(
-        root,
-        on_save_callback=lambda: (
-            load_config(),
-            root.destroy()
-        ),  # ty: ignore[unknown-argument]
+    window = ConfigWindow(
+        on_save_callback=load_config  # ty: ignore[unknown-argument]
     )
-    root.mainloop()
+    window.update()
+    window.deiconify()
+    window.lift()
+    window.focus_force()
+    window.mainloop()
 
 
 def on_exit(icon, item):

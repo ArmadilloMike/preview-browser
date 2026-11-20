@@ -64,18 +64,14 @@ def save_config(preview_apps = None, regular_browser = None, preview_browser = N
 
 # ui stuff
 
-class ConfigWindow(tk.Toplevel):
-    def __init__(self, parent, on_save_callback=None):
-        super().__init__(parent)
+class ConfigWindow(tk.Tk):
+    def __init__(self, on_save_callback=None):
+        super().__init__()
         self.title("Preview Browser Config")
-        self.geometry("530x360")
+        self.geometry("600x360")
         self.resizable(False, False)
 
-        self.transient(parent)
-        self.grab_set()
-
         self.on_save_callback = on_save_callback
-        #self.on_close_callback = on_close_callback  # ty: ignore[unresolved-reference]
 
         apps, reg_browser, prev_browser = load_config()
 
@@ -140,8 +136,6 @@ class ConfigWindow(tk.Toplevel):
     def close_window(self):
         self.destroy()
 
-        if self.on_close_callback:
-            self.on_close_callback()
 
     def save_and_close(self):
         apps_list = list(self.apps_listbox.get(0, tk.END))
