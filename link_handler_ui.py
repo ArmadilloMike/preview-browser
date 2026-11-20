@@ -75,7 +75,7 @@ class ConfigWindow(tk.Toplevel):
         self.grab_set()
 
         self.on_save_callback = on_save_callback
-        self.on_close_callback = on_close_callback  # ty: ignore[unresolved-reference]
+        #self.on_close_callback = on_close_callback  # ty: ignore[unresolved-reference]
 
         apps, reg_browser, prev_browser = load_config()
 

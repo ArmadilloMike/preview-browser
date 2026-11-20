@@ -126,26 +126,19 @@ def create_image():
 
 
 def open_config_window(icon, item):
-    def show_window():
-        root = tk.Tk()
-        root.withdraw()
-        root.lift()
+    root = tk.Tk()
+    root.deiconify()
+    root.lift()
+    root.focus_force()
 
-        def close_root():
+    ConfigWindow(
+        root,
+        on_save_callback=lambda: (
+            load_config(),
             root.destroy()
-
-        ConfigWindow(
-            root,
-            on_save_callback=lambda: (
-                load_config(),
-                close_root()
-            ),
-            on_close_callback=close_root
-        )
-
-        root.mainloop()
-
-    threading.Thread(target=show_window, daemon=True).start()
+        ),  # ty: ignore[unknown-argument]
+    )
+    root.mainloop()
 
 
 def on_exit(icon, item):
@@ -167,7 +160,6 @@ icon = pystray.Icon(
 
 def main():
     global server_socket
-
     load_config()
 
     originating_app = get_active_app()
@@ -182,8 +174,10 @@ def main():
 
     threading.Thread(target=socket_listener, daemon=True).start()
 
+    #threading.Thread(target=icon.run, daemon=True).start()
+    #open_config_window(None, None)
     if target_url:
-        threading.Thread(target=process_incoming_click, args=(target_url, originating_app), daemon=True).start()
+        process_incoming_click(target_url, originating_app)
 
     icon.run()
 if __name__ == '__main__':
