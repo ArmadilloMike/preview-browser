@@ -124,7 +124,6 @@ def create_image():
     dc.rectangle((16, 16, 48, 48), fill=(255, 255, 255))
     return image
 
-
 def open_config_window(icon, item):
     window = ConfigWindow(
         on_save_callback=load_config  # ty: ignore[unknown-argument]
