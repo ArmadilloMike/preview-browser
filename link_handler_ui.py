@@ -68,7 +68,7 @@ class ConfigWindow(tk.Tk):
     def __init__(self, on_save_callback=None):
         super().__init__()
         self.title("Preview Browser Config")
-        self.geometry("600x360")
+        self.geometry("583x260")
         self.resizable(False, False)
 
         self.on_save_callback = on_save_callback
@@ -92,14 +92,14 @@ class ConfigWindow(tk.Tk):
         current_reg  = self.reg_browser_var.get()
         if current_reg and current_reg not in installed_browsers:
             installed_browsers.insert(0, current_reg)
-        self.reg_browser_combo = ttk.Combobox(frame, textvariable=self.reg_browser_var, values=installed_browsers, width=52)
+        self.reg_browser_combo = ttk.Combobox(frame, textvariable=self.reg_browser_var, values=installed_browsers, width=74)
         self.reg_browser_combo.grid(row=1, column=0, pady=(2,10), padx=(0,5), sticky="we")
         ttk.Button(frame, text="Browse...", command=lambda: self.browse_exe(self.reg_browser_var)).grid(row=1, column=1, pady=(2,10))
 
         ttk.Label(frame, text="Preview Apps (Slack.exe)").grid(row=4, column=0, sticky="w")
         add_frame = ttk.Frame(frame)
         add_frame.grid(row=5, column=0, columnspan=2, sticky="we", pady=(2, 5))
-        ttk.Entry(add_frame, textvariable=self.new_app_var, width=40).pack(side="left", padx=(0, 5))
+        ttk.Entry(add_frame, textvariable=self.new_app_var, width=60).pack(side="left", padx=(0, 5))
         ttk.Button(add_frame, text="Add App", command=self.add_app).pack(side="left")
         ttk.Button(add_frame, text="Remove Selected", command=self.remove_app).pack(side="left", padx=(5, 0))
 
@@ -153,5 +153,11 @@ class ConfigWindow(tk.Tk):
 
 
 if __name__ == "__main__":
-    for browser in find_all_installed_browsers():
-        print(browser)
+    window = ConfigWindow(
+        on_save_callback=load_config  # ty: ignore[unknown-argument]
+    )
+    window.update()
+    window.deiconify()
+    window.lift()
+    window.focus_force()
+    window.mainloop()
