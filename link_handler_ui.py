@@ -68,7 +68,8 @@ class ConfigWindow(tk.Toplevel):
     def __init__(self, parent, on_save_callback=None):
         super().__init__(parent)
         self.title("Preview Browser Config")
-        self.geometry("530x360")
+        self.transient(parent)
+        self.geometry("600x360")
         self.resizable(False, False)
 
         self.transient(parent)
@@ -140,8 +141,6 @@ class ConfigWindow(tk.Toplevel):
     def close_window(self):
         self.destroy()
 
-        if self.on_close_callback:
-            self.on_close_callback()
 
     def save_and_close(self):
         apps_list = list(self.apps_listbox.get(0, tk.END))

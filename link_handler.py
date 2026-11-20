@@ -131,13 +131,17 @@ def open_config_window(icon, item):
     root.lift()
     root.focus_force()
 
-    ConfigWindow(
+    window = ConfigWindow(
         root,
         on_save_callback=lambda: (
             load_config(),
             root.destroy()
         ),  # ty: ignore[unknown-argument]
     )
+    window.update()
+    window.deiconify()
+    window.lift()
+    window.focus_force()
     root.mainloop()
 
 
