@@ -43,13 +43,33 @@ Source: "C:\Users\1744304\PycharmProjects\preview-browser\dist\preview-browser\p
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files.
 
 [Registry]
-;Registry data from file register_preview_browser.reg
-;End of registry data from file register_preview_browser.reg
-;SOME KEYS FILTERED DUE TO PRIVILEGESREQUIRED SETTINGS!
+; 1. Define the URL Protocol Handler (ProgID)
+Root: HKCU; Subkey: "Software\Classes\PreviewBrowserHTML"; ValueType: string; ValueName: ""; ValueData: "Preview Browser Document"; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\Classes\PreviewBrowserHTML"; ValueType: string; ValueName: "URL Protocol"; ValueData: ""
+Root: HKCU; Subkey: "Software\Classes\PreviewBrowserHTML\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\link-router.exe,0"
+Root: HKCU; Subkey: "Software\Classes\PreviewBrowserHTML\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\link-router.exe"" ""%1"""
+
+; 2. Register the Application Capabilities
+Root: HKCU; Subkey: "Software\PreviewBrowser\Capabilities"; ValueType: string; ValueName: "ApplicationName"; ValueData: "{#MyAppName}"; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\PreviewBrowser\Capabilities"; ValueType: string; ValueName: "ApplicationDescription"; ValueData: "Preview Browser Link Router"
+Root: HKCU; Subkey: "Software\PreviewBrowser\Capabilities\URLAssociations"; ValueType: string; ValueName: "http"; ValueData: "PreviewBrowserHTML"
+Root: HKCU; Subkey: "Software\PreviewBrowser\Capabilities\URLAssociations"; ValueType: string; ValueName: "https"; ValueData: "PreviewBrowserHTML"
+
+; 3. Register under StartMenuInternet (Required to appear in Windows Default Apps)
+Root: HKCU; Subkey: "Software\Clients\StartMenuInternet\PreviewBrowser"; ValueType: string; ValueName: ""; ValueData: "{#MyAppName}"; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\Clients\StartMenuInternet\PreviewBrowser\Capabilities"; ValueType: string; ValueName: "ApplicationName"; ValueData: "{#MyAppName}"
+Root: HKCU; Subkey: "Software\Clients\StartMenuInternet\PreviewBrowser\Capabilities"; ValueType: string; ValueName: "ApplicationDescription"; ValueData: "Preview Browser Link Router"
+Root: HKCU; Subkey: "Software\Clients\StartMenuInternet\PreviewBrowser\Capabilities\URLAssociations"; ValueType: string; ValueName: "http"; ValueData: "PreviewBrowserHTML"
+Root: HKCU; Subkey: "Software\Clients\StartMenuInternet\PreviewBrowser\Capabilities\URLAssociations"; ValueType: string; ValueName: "https"; ValueData: "PreviewBrowserHTML"
+Root: HKCU; Subkey: "Software\Clients\StartMenuInternet\PreviewBrowser\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\link-router.exe,0"
+Root: HKCU; Subkey: "Software\Clients\StartMenuInternet\PreviewBrowser\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\link-router.exe"""
+
+; 4. Add to RegisteredApplications so Windows Settings indexes it
+Root: HKCU; Subkey: "Software\RegisteredApplications"; ValueType: string; ValueName: "PreviewBrowser"; ValueData: "Software\PreviewBrowser\Capabilities"; Flags: uninsdeletevalue
+
 
 [Icons]
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#DoubleAmp(MyAppName)}}"; Flags: nowait postinstall skipifsilent
-
