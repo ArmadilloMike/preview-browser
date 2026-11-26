@@ -35,6 +35,8 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 [Files]
 Source: "dist\link-handler\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "dist\preview-browser\preview-browser.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "dist\link-handler\_internal\*"; DestDir: "{app}\_internal"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "dist\preview-browser\_internal\*"; DestDir: "{app}\_internal"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "assets\{#MyAppIconName}"; DestDir: "{app}"; Flags: ignoreversion
 
 [Registry]
