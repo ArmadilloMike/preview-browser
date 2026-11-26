@@ -21,7 +21,6 @@ SetupIconFile=assets\{#MyAppIconName}
 UninstallDisplayIcon={app}\{#MyAppIconName}
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
-SetupArchitecture=x64
 DisableProgramGroupPage=yes
 LicenseFile=license.txt
 PrivilegesRequired=lowest
