@@ -17,13 +17,13 @@ AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={autopf}\{#MyAppName}
-SetupIconFile=C:\Users\1744304\PycharmProjects\preview-browser\assets\{#MyAppIconName}
+SetupIconFile=assets\{#MyAppIconName}
 UninstallDisplayIcon={app}\{#MyAppIconName}
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 SetupArchitecture=x64
 DisableProgramGroupPage=yes
-LicenseFile=C:\Users\1744304\PycharmProjects\preview-browser\license.txt
+LicenseFile=license.txt
 PrivilegesRequired=lowest
 OutputBaseFilename=previewbrowser
 SolidCompression=yes
@@ -33,9 +33,9 @@ WizardStyle=modern windows11
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
-Source: "C:\Users\1744304\PycharmProjects\preview-browser\dist\link-handler\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\1744304\PycharmProjects\preview-browser\dist\preview-browser\preview-browser.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\1744304\PycharmProjects\preview-browser\assets\{#MyAppIconName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "dist\link-handler\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "dist\preview-browser\preview-browser.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "assets\{#MyAppIconName}"; DestDir: "{app}"; Flags: ignoreversion
 
 [Registry]
 ; 1. Define the URL Protocol Handler (ProgID)
