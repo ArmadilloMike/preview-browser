@@ -40,14 +40,15 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path release-assets
-            
+          
           # Copy installer and zip both PyInstaller dist directories
           Copy-Item "Output\previewbrowser.exe" -Destination "release-assets\"
           Compress-Archive -Path "dist\link-handler\*" -DestinationPath "release-assets\link-handler-win64.zip"
           Compress-Archive -Path "dist\preview-browser\*" -DestinationPath "release-assets\preview-browser-win64.zip"
-            
-          # Generate SHA-256 hash file for all release artifacts
-          Get-ChildItem "release-assets\*" -File | ForEach-Object {
+          
+          # Snapshot the files first so SHA256SUMS.txt isn't hashed while being written
+          $files = Get-ChildItem "release-assets\*" -File
+          $files | ForEach-Object {
             $hash = (Get-FileHash -Path $_.FullName -Algorithm SHA256).Hash.ToLower()
             "$hash  $($_.Name)"
           } | Out-File -FilePath "release-assets\SHA256SUMS.txt" -Encoding utf8
