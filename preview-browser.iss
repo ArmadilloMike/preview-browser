@@ -17,7 +17,7 @@ AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={autopf}\{#MyAppName}
-SetupIconFile=C:\Users\1744304\PycharmProjects\preview-browser\{#MyAppIconName}
+SetupIconFile=C:\Users\1744304\PycharmProjects\preview-browser\assets\{#MyAppIconName}
 UninstallDisplayIcon={app}\{#MyAppIconName}
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
@@ -35,7 +35,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 [Files]
 Source: "C:\Users\1744304\PycharmProjects\preview-browser\dist\link-handler\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\1744304\PycharmProjects\preview-browser\dist\preview-browser\preview-browser.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\1744304\PycharmProjects\preview-browser\{#MyAppIconName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\1744304\PycharmProjects\preview-browser\assets\{#MyAppIconName}"; DestDir: "{app}"; Flags: ignoreversion
 
 [Registry]
 ; 1. Define the URL Protocol Handler (ProgID)
