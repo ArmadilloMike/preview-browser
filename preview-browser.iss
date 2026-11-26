@@ -67,3 +67,4 @@ Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFile
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#DoubleAmp(MyAppName)}}"; Flags: nowait postinstall skipifsilent
+Filename: "ms-settings:defaultapps?registeredAppUser=PreviewBrowser"; Description: "Open Windows Settings to set {#MyAppName} as your default browser. This must be done for the app to work."; Flags: shellexec nowait postinstall skipifsilent
