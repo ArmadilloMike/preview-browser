@@ -12,6 +12,7 @@ dependencies = [
     "pyside6>=6.12.0",
     "pystray>=0.19.5",
     "pywin32>=303",
+    "pygetwindow>=0.0.9",
 ]
 
 [dependency-groups]
