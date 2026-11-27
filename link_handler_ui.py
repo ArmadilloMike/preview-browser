@@ -117,7 +117,7 @@ class ConfigWindow(tk.Tk):
     def browse_exe(self, target_var):
         filepath = filedialog.askopenfilename(
             title="Select Exe File",
-            filetypes=[("Exe Files", "*.exe"), ("All Files","*.*")]
+            filetypes=[("Executable Files", "*.exe"), ("All Files","*.*")]
         )
         if filepath:
             target_var.set(str(Path(filepath)))
