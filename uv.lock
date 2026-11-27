@@ -1,5 +1,5 @@
 version = 1
-revision = 5
+revision = 3
 requires-python = ">=3.12"
 
 [[package]]
@@ -166,7 +166,7 @@ requires-dist = [
     { name = "darkdetect", specifier = ">=0.8.0" },
     { name = "installed-browsers", specifier = ">=0.1.5" },
     { name = "psutil", specifier = ">=7.2.2" },
-    { name = "pygetwindow", specifier = ">=0.0.3" },
+    { name = "pygetwindow", specifier = ">=0.0.9" },
     { name = "pyinstaller", specifier = ">=6.22.3" },
     { name = "pyperclip", specifier = ">=1.11.0" },
     { name = "pyrefly", specifier = "==1.4.1" },
