@@ -8,7 +8,6 @@ import psutil
 import ctypes
 import subprocess
 import sys
-import tkinter as tk
 from PIL import Image, ImageDraw
 import pygetwindow
 from link_handler_ui import ConfigWindow
