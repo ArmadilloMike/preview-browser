@@ -53,6 +53,10 @@ jobs:
             "$hash  $($_.Name)"
           } | Out-File -FilePath "release-assets\SHA256SUMS.txt" -Encoding utf8
 
+      - name: Rename installer file
+        shell: pwsh
+        run: Rename-Item -Path "release-assets\previewbrowser.exe" -NewName "preview-browser-installer.exe"
+
       - name: Upload files to release
         uses: softprops/action-gh-release@v2
         with:
