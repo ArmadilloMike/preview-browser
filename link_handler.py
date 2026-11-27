@@ -15,7 +15,7 @@ from link_handler_ui import ConfigWindow
 
 preview_apps = ["Slack.exe"]
 regular_browser_path = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
-preview_browser_path = "C:\\Users\\1744304\\PycharmProjects\\preview-browser\\dist\\preview-browser\\mpreview-browser.exe"
+preview_browser_path = os.path.expandvars("%LOCALAPPDATA%\\Programs\\Preview Browser\\preview-browser.exe")
 
 CONFIG_LOCATION = os.path.expandvars(r"%APPDATA%\PreviewBrowser\config.json")
 

@@ -50,7 +50,7 @@ def load_config():
     except FileNotFoundError:
         preview_apps = ["Slack.exe"]
         regular_browser = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
-        preview_browser = "C:\\Users\\1744304\\PycharmProjects\\preview-browser\\dist\\preview-browser\\preview-browser.exe"
+        preview_browser = os.path.expandvars("%LOCALAPPDATA%\\Programs\\Preview Browser\\preview-browser.exe")
     return preview_apps, regular_browser, preview_browser
 def save_config(preview_apps = None, regular_browser = None, preview_browser = None):
     config_data = {
