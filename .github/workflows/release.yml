@@ -61,8 +61,21 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            release-assets/previewbrowser.exe
+            release-assets/preview-browser-installer.exe
             release-assets/link-handler-win64.zip
             release-assets/preview-browser-win64.zip
             release-assets/SHA256SUMS.txt
           generate_release_notes: true
+          body: |
+            ### Downloads
+            ### Windows Installer
+            * **`preview-browser-installer.exe`** - Per-user installer. Installs to `%LocalAppData%\Programs\Preview Browser` and also registers itself in the default app selection screen in windows settings.
+            ### Portable Releases
+            * **`link-handler-win64.zip`** - Portable archive for the link handler portion of the app, no preview browser bundled
+            * **`preview-browser-win64.zip`** - Portable archive for the preview browser only, pass URLs with the --url flag
+            
+            ### Verify Checksums
+            Verify your download against `SHA256SUMS.txt`:
+            ```powershell
+            Get-FileHash .\previewbrowser.exe -Algorithm SHA256
+            ```
